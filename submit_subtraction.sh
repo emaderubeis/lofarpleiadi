@@ -1,0 +1,19 @@
+#!/bin/bash                                                                                                                                                                                                                                                 
+#SBATCH --job-name=sub_166_day04                                                                                                                                                                                                                            
+#SBATCH -p lofar                                                                                                                                                                                                                                            
+#SBATCH --time=96:00:00                                                                                                                                                                                                                                     
+#SBATCH -N 1                                                                                                                                                                                                                                                
+#SBATCH --ntasks-per-node=32                                                                                                                                                                                                                                
+###SBATCH --nodelist=r36c03s05                                                                                                                                                                                                                              
+#SBATCH --exclusive                                                                                                                                                                                                                                         
+#SBATCH --output=/homes/e.derubeis/subtraction.log                                                                                                                                                                                                          
+#SBATCH --error=/homes/e.derubeis/subtraction.err                                                                                                                                                                                                           
+#SBATCH --mail-type=ALL                                                                                                                                                                                                                                     
+#SBATCH --mail-user=emanuele.derubeis2@unibo.it                                                                                                                                                                                                             
+#SBATCH --chdir=/local/work/e.derubeis/                                                                                                                                                                                                                     
+
+echo "Hostname is" $(hostname)
+cp /homes/e.derubeis/subtraction_pleiadi.sh /local/work/e.derubeis/subtraction_pleiadi.sh
+apptainer-setup
+apptainer exec -B /tmp,/dev/shm,/local/work,/iranet/users/,/iranet/groups /iranet/groups/lofar/containers/flocs_v4.5.0_sandybridge_sandybridge_mkl_cuda.sif sh /local/work/e.derubeis/subtraction_pleiadi.sh -f 166 -b /homes/e.derubeis/boxfile_1.5deg.reg\
+ -n 28 -w /local/work/e.derubeis/ -d /iranet/groups/lofar/e.derubeis/day04/ddfpipeline/ -v /iranet/groups/redalert/e.derubeis/day04/vlbi/Delay-Calibration/
